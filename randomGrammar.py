@@ -61,9 +61,22 @@ for i in xrange(10):
 """
 
 
+class Number:
+    def __init__(self, value):
+        self.value = value
+
+    def difference(self, number):
+        difference = abs(self.value - number.value)
+        return difference
+
+    def __repr__(self):
+        return "(" + str(self.value) + ")"
+
+
 # inverse of route function
 
 class Fitness:
+
     def __init__(self, number):
         self.number = number
         self.difference = 0
@@ -90,38 +103,38 @@ class Fitness:
 
     # creating random numbers, first generation, creating the population
 
-    def createNum(self, numList):
+    def createNum(numList):
         number = random.sample(numList, len(numList))
         return number
 
     # generating full population
 
-    def initialPopulation(self, listSize, numList):
+    def initialPopulation(listSize, numList):
         population = []
 
         # looping through the first generation to create create as many difference as possible
         for i in range(0, listSize):
-            population.append(self.createNum(numList))
+            population.append(createNum(numList))
         return population
 
     # ranking each fitness to each individual in the population
 
-    def rankDiff(self, population):
+    def rankDiff(population):
         fitnessResults = {}
         for i in range(0, len(population)):
             fitnessResults[i] = Fitness(population[i]).numberFitness()
         return sorted(fitnessResults.items(), key=operator.itemgetter(1), reverse=True)
         # output is the ranked list with id
 
-    def geneticAlgorithm(self, population, popSize):
-        pop = self.initialPopulation(popSize, population)
+    def geneticAlgorithm(population, popSize):
+        pop = initialPopulation(popSize, population)
 
-        print("Final distance: " + str(1 / self.rankDiff(pop)[0][1]))
-        bestRouteIndex = self.rankDiff(pop)[0][0]
+        print("Final distance: " + str(1 / rankDiff(pop)[0][1]))
+
+        #bestRouteIndex = rankDiff(pop)[0][0]
         bestRoute = pop[bestRouteIndex]
-        print(bestRoute)
+        #print(bestRoute)
         return bestRoute
-
 
 fitness = Fitness(10)
 cityList = [1, 10, 3, 4, 7, 19]
