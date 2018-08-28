@@ -28,13 +28,13 @@ class CFG(object):
 
         return sentence
 
-    def max(self,x, y):
-        if x>y:
+    def max(self, x, y):
+        if x > y:
             return x
         else:
             return y
 
-    def maxVal(self):
+    def maxVal(self, numList=[]):
         max_value = numList[0]
         for x in numList:
             if max_value < x:
@@ -43,13 +43,13 @@ class CFG(object):
         return max_value
 
     def cost_max(self, func):
-        pair_list = range(0,100)
+        pair_list = range(0, 100)
         cost = 0
         for i in pair_list:
-            var1 = random.randint(-100,100)
-            var2 = random.randint(-100,100)
-            cost += func(var1,var2)-max(var1, var2)
-
+            var1 = random.randint(-100, 100)
+            var2 = random.randint(-100, 100)
+            cost += (func(var1, var2) - max(var1, var2)) * (func(var1, var2) - max(var1, var2))
+        return cost
 
 
 cfg1 = CFG()
@@ -58,7 +58,7 @@ cfg1.add_prod('VAR', '1 | 2')
 cfg1.add_prod('OPPR', '> | <')
 
 str1 = cfg1.gen_random('S')
-oppr = ['>', '<', '+', '-', '*', '/']
+oppr = ['>', '<']
 var = ['x', 'y']
 # print(str1)
 # compiledCodeBlock = compile(str1, '<string>', 'single')
@@ -70,7 +70,7 @@ for i in my_list:
     exec("""
 def func{} ( {}, {}):
         strExpr = '{} {} {}'
-        print(strExpr)
+        #print(strExpr)
         expr = eval(strExpr)
         if expr == False:
             return {}
@@ -81,16 +81,18 @@ def func{} ( {}, {}):
             #print("regular")
 
     """.format(i, var[0], var[1], var[random.randint(0, 1)],
-               oppr[random.randint(0, 5)], var[random.randint(0, 1)], var[random.randint(0, 1)],
+               oppr[random.randint(0, 1)], var[random.randint(0, 1)], var[random.randint(0, 1)],
                var[random.randint(0, 1)]))
-
-
 
 for i in my_list:
     exec("""func{}(random.randint(0, 10), random.randint(0, 10))""".format(i))
 
-"""func1(random.randint(0, 10), random.randint(0, 10))
-func2(random.randint(0, 10), random.randint(0, 10))
+cost_list = []
+for i in my_list:
+    exec("""cost_list.insert(i,cfg1.cost_max(func{}))""".format(i, i))
+
+print(func1(random.randint(0, 10), random.randint(0, 10)))
+"""func2(random.randint(0, 10), random.randint(0, 10))
 func3(random.randint(0, 10), random.randint(0, 10))
 func4(random.randint(0, 10), random.randint(0, 10))
 func5(random.randint(0, 10), random.randint(0, 10))
@@ -99,6 +101,7 @@ func6(random.randint(0, 10), random.randint(0, 10))"""
 """var[random.randint(0, 1)],
                var[random.randint(0, 1)]"""
 
+print(cfg1.maxVal(cost_list))
 # if {} {} {}:
 # print({})
 # else:
