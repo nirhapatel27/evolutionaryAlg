@@ -4,6 +4,8 @@ from collections import defaultdict
 
 from pip._vendor.msgpack.fallback import xrange
 
+numList = [2, 3, 10, 12, 17, 123, 34, 200, 134, 28]
+
 
 # cfg to generate random operations
 
@@ -66,19 +68,33 @@ class Number:
         self.value = value
 
     def difference(self, number):
-        difference = abs(self.value - number.value)
+        difference = abs(self.value - number)
         return difference
 
     def __repr__(self):
         return "(" + str(self.value) + ")"
 
 
+class Population:
+
+    def initialPopulation(popSize, numList, initialize):
+        population = [popSize]
+
+        # looping through the first generation to create create as many difference as possible
+        # if population has initialized
+        if initialize:
+            for i in range(0, popSize):
+                population.append(createNum(numList))
+
+        return population
+
+
 # inverse of route function
 
 class Fitness:
 
-    def __init__(self, number):
-        self.number = number
+    def __init__(self, absDiff):
+        self.absDiff = absDiff
         self.difference = 0
         self.fitness = 0.0
 
@@ -86,12 +102,12 @@ class Fitness:
     def numberDifference(self):
         if self.difference == 0:
             numDifference = 0
-            for i in range(0, len(self.number)):
-                numStart = self.number[i]
-                if i + 1 < len(self.number):
-                    numFinal = self.number[i + 1]
+            for i in range(0, len(self.absDiff)):
+                numStart = self.absDiff[i]
+                if i + 1 < len(self.absDiff):
+                    numFinal = self.absDiff[i + 1]
                 else:
-                    numFinal = self.number[0]
+                    numFinal = self.absDiff[0]
                 numDifference += numStart.difference(numFinal)
             self.difference = numDifference
         return self.difference
@@ -103,39 +119,36 @@ class Fitness:
 
     # creating random numbers, first generation, creating the population
 
-    def createNum(numList):
-        number = random.sample(numList, len(numList))
-        return number
 
-    # generating full population
+def createNum(numList):
+    absDiff = random.sample(numList, len(numList))
+    return absDiff
 
-    def initialPopulation(listSize, numList):
-        population = []
 
-        # looping through the first generation to create create as many difference as possible
-        for i in range(0, listSize):
-            population.append(createNum(numList))
-        return population
+# generating full population
 
-    # ranking each fitness to each individual in the population
 
-    def rankDiff(population):
-        fitnessResults = {}
-        for i in range(0, len(population)):
-            fitnessResults[i] = Fitness(population[i]).numberFitness()
-        return sorted(fitnessResults.items(), key=operator.itemgetter(1), reverse=True)
-        # output is the ranked list with id
+# ranking each fitness to each individual in the population
 
-    def geneticAlgorithm(population, popSize):
-        pop = initialPopulation(popSize, population)
 
-        print("Final distance: " + str(1 / rankDiff(pop)[0][1]))
+def rankDiff(population):
+    fitnessResults = {}
+    for i in range(0, len(population)):
+        fitnessResults[i] = Fitness(population[i]).numberFitness()
+    return sorted(fitnessResults.items(), key=operator.itemgetter(1), reverse=True)
+    # output is the ranked list with id
 
-        #bestRouteIndex = rankDiff(pop)[0][0]
-        bestRoute = pop[bestRouteIndex]
-        #print(bestRoute)
-        return bestRoute
 
-fitness = Fitness(10)
+def geneticAlgorithm(population, popSize):
+    pop = initialPopulation(popSize, population)
+
+    print("Final distance: " + str(1 / rankDiff(pop)[0][1]))
+
+    bestRouteIndex = rankDiff(pop)[0][0]
+    bestRoute = pop[bestRouteIndex]
+    print(bestRoute)
+    return bestRoute
+
+
 cityList = [1, 10, 3, 4, 7, 19]
-fitness.geneticAlgorithm(population=cityList, popSize=100)
+geneticAlgorithm(population=cityList, popSize=100)
