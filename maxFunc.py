@@ -1,9 +1,6 @@
 import random
 from collections import defaultdict
 
-numList = [2, 3, 10, 12, 17, 123, 34, 200, 134, 28]
-
-
 class CFG(object):
     def __init__(self):
         self.prod = defaultdict(list)
@@ -34,16 +31,20 @@ class CFG(object):
         else:
             return y
 
-    def maxVal(self, numList=[]):
-        max_value = numList[0]
+    def minVal(self, numList=[]):
+        count = 0
+        min_value = numList[0]
         for x in numList:
-            if max_value < x:
-                max_value = x
-        max_value = str(max_value)
-        return max_value
+            if min_value > x:
+                if x == 0 and count < 5:
+                    count = count + 1
+                else:
+                    min_value = x
+        min_value = str(min_value)
+        return min_value
 
     def cost_max(self, func):
-        pair_list = range(0, 100)
+        pair_list = range(0, 10)
         cost = 0
         for i in pair_list:
             var1 = random.randint(-100, 100)
@@ -55,10 +56,10 @@ class CFG(object):
 cfg1 = CFG()
 cfg1.add_prod('S', '''\n\tif VAR OPPR VAR :\n\t\tprint( VAR ); else: \n\t\tprint( VAR )\n''')
 cfg1.add_prod('VAR', '1 | 2')
-cfg1.add_prod('OPPR', '> | <')
+cfg1.add_prod('OPPR', '> | < | + | - | *')
 
 str1 = cfg1.gen_random('S')
-oppr = ['>', '<']
+oppr = ['>', '<', '-', '+', '*']
 var = ['x', 'y']
 # print(str1)
 # compiledCodeBlock = compile(str1, '<string>', 'single')
@@ -67,42 +68,26 @@ var = ['x', 'y']
 
 my_list = range(0, 100)
 for i in my_list:
-    exec("""
-def func{} ( {}, {}):
-        strExpr = '{} {} {}'
-        #print(strExpr)
-        expr = eval(strExpr)
-        if expr == False:
-            return {}
-        elif expr == True:
-            return {}
-        else:
-            return
-            #print("regular")
+    exec("""def func{} ( {}, {}):
+               strExpr = '{} {} {}'
+               #print(strExpr)
+               expr = eval(strExpr)
+               if expr == False:
+                   return {}
+               elif expr == True:
+                   return {}
+               else:
+                   return expr
 
-    """.format(i, var[0], var[1], var[random.randint(0, 1)],
-               oppr[random.randint(0, 1)], var[random.randint(0, 1)], var[random.randint(0, 1)],
-               var[random.randint(0, 1)]))
+           """.format(i, var[0], var[1], var[random.randint(0, 1)],
+                      oppr[random.randint(0, 4)], var[random.randint(0, 1)], var[random.randint(0, 1)],
+                      var[random.randint(0, 1)]))
 
 for i in my_list:
     exec("""func{}(random.randint(0, 10), random.randint(0, 10))""".format(i))
 
 cost_list = []
 for i in my_list:
-    exec("""cost_list.insert(i,cfg1.cost_max(func{}))""".format(i, i))
-
-print(func1(random.randint(0, 10), random.randint(0, 10)))
-"""func2(random.randint(0, 10), random.randint(0, 10))
-func3(random.randint(0, 10), random.randint(0, 10))
-func4(random.randint(0, 10), random.randint(0, 10))
-func5(random.randint(0, 10), random.randint(0, 10))
-func6(random.randint(0, 10), random.randint(0, 10))"""
-
-"""var[random.randint(0, 1)],
-               var[random.randint(0, 1)]"""
-
-print(cfg1.maxVal(cost_list))
-# if {} {} {}:
-# print({})
-# else:
-# print({})
+    exec("""cost_list.insert({},cfg1.cost_max(func{}))""".format(i, i))
+print(cost_list)
+print(cfg1.minVal(cost_list))
