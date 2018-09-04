@@ -1,5 +1,7 @@
+import operator
 import random
 from collections import defaultdict
+
 
 class CFG(object):
     def __init__(self):
@@ -31,17 +33,36 @@ class CFG(object):
         else:
             return y
 
-    def minVal(self, numList=[]):
+    def minVal(self, numDict={}):
         count = 0
-        min_value = numList[0]
-        for x in numList:
-            if min_value > x:
-                if x == 0 and count < 5:
+        min_value = numDict.get('func0')
+        for x, y in numDict.items():
+            if min_value > y:
+                if y == 0 and count < 5:
                     count = count + 1
                 else:
-                    min_value = x
+                    min_value = y
+                    func = x
         min_value = str(min_value)
-        return min_value
+        minFunc_dict = {func: min_value}
+        return minFunc_dict
+
+    def convert_dict(self, tup, sorted_func):
+        for a, b in tup:
+            sorted_func.setdefault(a, []).append(b)
+        return sorted_func
+
+    def first_population(self, sorted_dict={}):
+        first_funcPop = {}
+        count = range(0, 4)
+        for i in count:
+            first_funcPop[list(sorted_dict.keys())[i]] = list(sorted_dict.values())[i]
+        print(first_funcPop)
+
+
+    def cost_sort(self, numDict={}):
+        sorted_d = sorted(numDict.items(), key=lambda x: x[1])
+        return sorted_d
 
     def cost_max(self, func):
         pair_list = range(0, 10)
@@ -51,6 +72,9 @@ class CFG(object):
             var2 = random.randint(-100, 100)
             cost += (func(var1, var2) - max(var1, var2)) * (func(var1, var2) - max(var1, var2))
         return cost
+
+    def mutate_max(self, func1, func2):
+        return
 
 
 cfg1 = CFG()
@@ -77,11 +101,11 @@ for i in my_list:
                elif expr == True:
                    return {}
                else:
-                   return expr
+                   return {}
 
            """.format(i, var[0], var[1], var[random.randint(0, 1)],
                       oppr[random.randint(0, 4)], var[random.randint(0, 1)], var[random.randint(0, 1)],
-                      var[random.randint(0, 1)]))
+                      var[random.randint(0, 1)], var[random.randint(0, 1)]))
 
 for i in my_list:
     exec("""func{}(random.randint(0, 10), random.randint(0, 10))""".format(i))
@@ -89,5 +113,19 @@ for i in my_list:
 cost_list = []
 for i in my_list:
     exec("""cost_list.insert({},cfg1.cost_max(func{}))""".format(i, i))
-print(cost_list)
-print(cfg1.minVal(cost_list))
+
+cost_dict = {}
+sorted_dict = {}
+
+for i in my_list:
+    indexStr = str(i)
+    funcName = 'func' + indexStr
+    cost_dict[funcName] = cost_list[i]
+
+print(cost_dict)
+sort_list = cfg1.cost_sort(cost_dict)
+print(sort_list)
+sorted_dict = cfg1.convert_dict(sort_list, sorted_dict)
+print(sorted_dict)
+print(cfg1.minVal(cost_dict))
+cfg1.first_population(sorted_dict)
