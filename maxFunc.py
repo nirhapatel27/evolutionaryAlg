@@ -27,12 +27,14 @@ class CFG(object):
 
         return sentence
 
+    # function is a black box function, we want a function that matches pretty closely to this func
     def max(self, x, y):
         if x > y:
             return x
         else:
             return y
 
+    # gets the function name and the mimumum value associated with it from all the cost
     def minVal(self, numDict={}):
         count = 0
         min_value = numDict.get('func0')
@@ -47,11 +49,13 @@ class CFG(object):
         minFunc_dict = {func: min_value}
         return minFunc_dict
 
+    # converts the list to dictionary
     def convert_dict(self, tup, sorted_func):
         for a, b in tup:
             sorted_func.setdefault(a, []).append(b)
         return sorted_func
 
+    # makes a dictionary of first 4 functions with the lowest cost
     def first_population(self, sorted_dict={}):
         first_funcPop = {}
         count = range(0, 4)
@@ -59,16 +63,17 @@ class CFG(object):
             first_funcPop[list(sorted_dict.keys())[i]] = list(sorted_dict.values())[i]
         print(first_funcPop)
 
-
+    # sorts the dictionary of the cost in increasing order
     def cost_sort(self, numDict={}):
         sorted_d = sorted(numDict.items(), key=lambda x: x[1])
         return sorted_d
 
-    def cost_max(self, func):
+    # finds the cost of each function with respect to the black box function
+    def cost(self, func):
         pair_list = range(0, 10)
         cost = 0
         for i in pair_list:
-            var1 = random.randint(-100, 100)
+            var1 = random.randint(-100, 100) # gets random inputs for the two function
             var2 = random.randint(-100, 100)
             cost += (func(var1, var2) - max(var1, var2)) * (func(var1, var2) - max(var1, var2))
         return cost
@@ -78,19 +83,13 @@ class CFG(object):
 
 
 cfg1 = CFG()
-cfg1.add_prod('S', '''\n\tif VAR OPPR VAR :\n\t\tprint( VAR ); else: \n\t\tprint( VAR )\n''')
-cfg1.add_prod('VAR', '1 | 2')
-cfg1.add_prod('OPPR', '> | < | + | - | *')
-
-str1 = cfg1.gen_random('S')
 oppr = ['>', '<', '-', '+', '*']
 var = ['x', 'y']
-# print(str1)
-# compiledCodeBlock = compile(str1, '<string>', 'single')
-# exec(compiledCodeBlock)
-# eval(str1)
 
-my_list = range(0, 100)
+# for the number of functions
+my_list = range(0, 10)
+
+# makes new random functions from the oppressions and the variables above
 for i in my_list:
     exec("""def func{} ( {}, {}):
                strExpr = '{} {} {}'
@@ -107,25 +106,37 @@ for i in my_list:
                       oppr[random.randint(0, 4)], var[random.randint(0, 1)], var[random.randint(0, 1)],
                       var[random.randint(0, 1)], var[random.randint(0, 1)]))
 
+
 for i in my_list:
     exec("""func{}(random.randint(0, 10), random.randint(0, 10))""".format(i))
 
+#gets the cost of each function and adds it to the list
 cost_list = []
 for i in my_list:
-    exec("""cost_list.insert({},cfg1.cost_max(func{}))""".format(i, i))
+    exec("""cost_list.insert({},cfg1.cost(func{}))""".format(i, i))
 
 cost_dict = {}
 sorted_dict = {}
 
+# makes a dictionary and adds the function name and its associated cost
 for i in my_list:
     indexStr = str(i)
     funcName = 'func' + indexStr
     cost_dict[funcName] = cost_list[i]
 
+# prints the dictionary with cost and function
 print(cost_dict)
+
+# sorts the dictionary and returns a list in ascending order of the cost
 sort_list = cfg1.cost_sort(cost_dict)
 print(sort_list)
+
+# converts tuple list of func: cost to dictionary
 sorted_dict = cfg1.convert_dict(sort_list, sorted_dict)
 print(sorted_dict)
+
+# prints the minimum value of the cost
 print(cfg1.minVal(cost_dict))
+
+# generates the first population (the first 4 members of the sorted function list
 cfg1.first_population(sorted_dict)
