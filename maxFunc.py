@@ -73,13 +73,18 @@ class CFG(object):
         pair_list = range(0, 10)
         cost = 0
         for i in pair_list:
-            var1 = random.randint(-100, 100) # gets random inputs for the two function
+            var1 = random.randint(-100, 100)  # gets random inputs for the two function
             var2 = random.randint(-100, 100)
             cost += (func(var1, var2) - max(var1, var2)) * (func(var1, var2) - max(var1, var2))
         return cost
 
     def mutate_max(self, func1, func2):
         return
+
+    def print_firstPop(self, funcList = []):
+        first_popList = range(0,4)
+        for i in first_popList:
+            print(funcList[i])
 
 
 cfg1 = CFG()
@@ -88,35 +93,35 @@ var = ['x', 'y']
 
 # for the number of functions
 my_list = range(0, 10)
+funcList = []
+for i in my_list:
+    funcString = """def func{0} ( {1}, {2}):
+                strExpr = '{3} {4} {5}'
+                expr = eval(strExpr)
+                if expr == False:
+                    return {6}
+                elif expr == True:
+                    return {7}
+                else:
+                    return {8}
 
+            """.format(i, var[0], var[1], var[random.randint(0, 1)],
+                       oppr[random.randint(0, 4)], var[random.randint(0, 1)], var[random.randint(0, 1)],
+                       var[random.randint(0, 1)], var[random.randint(0, 1)])
+    funcList.append(funcString)
+
+print(funcList[0])
 # makes new random functions from the oppressions and the variables above
 for i in my_list:
-    exec("""def func{} ( {}, {}):
-               strExpr = '{} {} {}'
-               #print(strExpr)
-               expr = eval(strExpr)
-               if expr == False:
-                   return {}
-               elif expr == True:
-                   return {}
-               else:
-                   return {}
+    exec(funcList[i])
 
-           """.format(i, var[0], var[1], var[random.randint(0, 1)],
-                      oppr[random.randint(0, 4)], var[random.randint(0, 1)], var[random.randint(0, 1)],
-                      var[random.randint(0, 1)], var[random.randint(0, 1)]))
-
-
-for i in my_list:
-    exec("""func{}(random.randint(0, 10), random.randint(0, 10))""".format(i))
-
-#gets the cost of each function and adds it to the list
+# gets the cost of each function and adds it to the list
 cost_list = []
 for i in my_list:
     exec("""cost_list.insert({},cfg1.cost(func{}))""".format(i, i))
 
-cost_dict = {}
-sorted_dict = {}
+cost_dict = {}  # dictionary with the cost and the name of the function
+sorted_dict = {}  # sorted dictionary according to their cost in increasing order.
 
 # makes a dictionary and adds the function name and its associated cost
 for i in my_list:
@@ -140,3 +145,5 @@ print(cfg1.minVal(cost_dict))
 
 # generates the first population (the first 4 members of the sorted function list
 cfg1.first_population(sorted_dict)
+
+cfg1.print_firstPop(funcList)
