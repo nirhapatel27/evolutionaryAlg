@@ -81,10 +81,18 @@ class CFG(object):
     def mutate_max(self, func1, func2):
         return
 
-    def print_firstPop(self, funcList = []):
-        first_popList = range(0,4)
+    def print_firstPop(self, funcList=[], indexArray=[]):
+        first_popList = range(0, 4)
         for i in first_popList:
-            print(funcList[i])
+            print(funcList[indexArray[i]])
+
+    def index_firstPop(self, costDict={}, sorted_dict={}):
+        indexArr = []
+        for i in range(4):
+            funcName = list(sorted_dict.keys())[i]
+            if funcName in costDict:
+                indexArr.append(list(costDict).index(funcName))
+        return indexArr
 
 
 cfg1 = CFG()
@@ -110,7 +118,6 @@ for i in my_list:
                        var[random.randint(0, 1)], var[random.randint(0, 1)])
     funcList.append(funcString)
 
-print(funcList[0])
 # makes new random functions from the oppressions and the variables above
 for i in my_list:
     exec(funcList[i])
@@ -140,10 +147,11 @@ print(sort_list)
 sorted_dict = cfg1.convert_dict(sort_list, sorted_dict)
 print(sorted_dict)
 
-# prints the minimum value of the cost
-print(cfg1.minVal(cost_dict))
-
 # generates the first population (the first 4 members of the sorted function list
 cfg1.first_population(sorted_dict)
 
-cfg1.print_firstPop(funcList)
+# gets the index of the first population functions
+indexArr = cfg1.index_firstPop(cost_dict, sorted_dict)
+
+# prints all the function in the first population
+cfg1.print_firstPop(funcList, indexArr)
