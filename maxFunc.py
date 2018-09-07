@@ -34,7 +34,7 @@ class CFG(object):
         else:
             return y
 
-    # gets the function name and the mimumum value associated with it from all the cost
+    # gets the function name and the minimum value associated with it from all the cost
     def minVal(self, numDict={}):
         count = 0
         min_value = numDict.get('func0')
@@ -79,9 +79,7 @@ class CFG(object):
             cost += (func(var1, var2) - max(var1, var2)) * (func(var1, var2) - max(var1, var2))
         return cost
 
-    def mutate_max(self, func1, func2):
-        return
-
+    #prints the first four functions of the lowest cost and returns the array of thsi function
     def print_firstPop(self, funcList=[], indexArray=[]):
         first_popList = range(0, 4)
         firstPopArr = []
@@ -90,6 +88,7 @@ class CFG(object):
             print(funcList[indexArray[i]])
         return firstPopArr
 
+    # index of the first population functions in the actual dictionary
     def index_firstPop(self, costDict={}, sorted_dict={}):
         indexArr = []
         for i in range(4):
@@ -98,10 +97,21 @@ class CFG(object):
                 indexArr.append(list(costDict).index(funcName))
         return indexArr
 
+    # finding the nth occurence of a substring
+    def findnth(self , string, substring, n):
+        parts = string.split(substring, n + 1)
+        if len(parts) <= n + 1:
+            return -1
+        return len(string) - len(parts[-1]) - len(substring)
+
+    # mutates two functions passed in the parameter
     def mutate_population(self, first_population=[]):
         strFunc1 = first_population[0]
         strFunc2 = first_population[1]
-        breedFunc1 = strFunc1.replace("return", "print")
+        print(self.findnth(strFunc1, 'return', 2))
+        statement1 = strFunc1.find('return')
+        statement2 = strFunc2.find('return')
+        breedFunc1 = strFunc1.replace(strFunc1[statement1:(statement1 + 9)], strFunc2[statement2:(statement2 + 9)], 1)
         print(breedFunc1)
 
 
