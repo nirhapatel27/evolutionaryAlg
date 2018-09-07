@@ -62,6 +62,7 @@ class CFG(object):
         for i in count:
             first_funcPop[list(sorted_dict.keys())[i]] = list(sorted_dict.values())[i]
         print(first_funcPop)
+        return first_funcPop
 
     # sorts the dictionary of the cost in increasing order
     def cost_sort(self, numDict={}):
@@ -83,8 +84,11 @@ class CFG(object):
 
     def print_firstPop(self, funcList=[], indexArray=[]):
         first_popList = range(0, 4)
+        firstPopArr = []
         for i in first_popList:
+            firstPopArr.append(funcList[indexArray[i]])
             print(funcList[indexArray[i]])
+        return firstPopArr
 
     def index_firstPop(self, costDict={}, sorted_dict={}):
         indexArr = []
@@ -93,6 +97,12 @@ class CFG(object):
             if funcName in costDict:
                 indexArr.append(list(costDict).index(funcName))
         return indexArr
+
+    def mutate_population(self, first_population=[]):
+        strFunc1 = first_population[0]
+        strFunc2 = first_population[1]
+        breedFunc1 = strFunc1.replace("return", "print")
+        print(breedFunc1)
 
 
 cfg1 = CFG()
@@ -154,4 +164,7 @@ cfg1.first_population(sorted_dict)
 indexArr = cfg1.index_firstPop(cost_dict, sorted_dict)
 
 # prints all the function in the first population
-cfg1.print_firstPop(funcList, indexArr)
+first_population = cfg1.print_firstPop(funcList, indexArr)
+
+# returns a mutated breed of the first two functions in the first population
+cfg1.mutate_population(first_population)
