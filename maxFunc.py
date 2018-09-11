@@ -1,4 +1,3 @@
-import operator
 import random
 from collections import defaultdict
 
@@ -79,7 +78,7 @@ class CFG(object):
             cost += (func(var1, var2) - max(var1, var2)) * (func(var1, var2) - max(var1, var2))
         return cost
 
-    #prints the first four functions of the lowest cost and returns the array of thsi function
+    # prints the first four functions of the lowest cost and returns the array of thsi function
     def print_firstPop(self, funcList=[], indexArray=[]):
         first_popList = range(0, 4)
         firstPopArr = []
@@ -98,21 +97,44 @@ class CFG(object):
         return indexArr
 
     # finding the nth occurence of a substring
-    def findnth(self , string, substring, n):
+    def findnth(self, string, substring, n):
         parts = string.split(substring, n + 1)
         if len(parts) <= n + 1:
             return -1
         return len(string) - len(parts[-1]) - len(substring)
 
     # mutates two functions passed in the parameter
-    def mutate_population(self, first_population=[]):
-        strFunc1 = first_population[0]
-        strFunc2 = first_population[1]
-        print(self.findnth(strFunc1, 'return', 2))
-        statement1 = strFunc1.find('return')
-        statement2 = strFunc2.find('return')
-        breedFunc1 = strFunc1.replace(strFunc1[statement1:(statement1 + 9)], strFunc2[statement2:(statement2 + 9)], 1)
-        print(breedFunc1)
+    def mutate_population(self, population=[]):
+        j = 0
+        breedPop = []
+        print(len(population))
+        while j < len(population):
+            strFunc1 = population[j]
+            strFunc2 = population[j + 1]
+            i = 1
+            replaceWord = 'return'
+            wordLength = len(replaceWord)
+            variableLength = len(' x')
+            replaceLen = wordLength + variableLength
+            statement1 = self.findnth(strFunc1, replaceWord, 0)
+            statement2 = self.findnth(strFunc2, replaceWord, 0)
+
+            while strFunc1[statement1: statement1 + replaceLen] == strFunc2[statement2: statement2 + replaceLen]:
+                statement1 = self.findnth(strFunc1, replaceWord, i)
+                statement2 = self.findnth(strFunc2, replaceWord, i)
+                i += 1
+                if i > 3:
+                    break
+
+            breedFunc1 = strFunc1.replace(strFunc1[statement1:(statement1 + wordLength + variableLength)],
+                                          strFunc2[statement2:(statement2 + wordLength + variableLength)], 1)
+
+            j += 2
+            print(breedPop)
+            print(j)
+            breedPop.append(breedFunc1)
+            return breedPop
+
 
 
 cfg1 = CFG()
@@ -177,4 +199,5 @@ indexArr = cfg1.index_firstPop(cost_dict, sorted_dict)
 first_population = cfg1.print_firstPop(funcList, indexArr)
 
 # returns a mutated breed of the first two functions in the first population
-cfg1.mutate_population(first_population)
+breed1 = cfg1.mutate_population(first_population)
+
