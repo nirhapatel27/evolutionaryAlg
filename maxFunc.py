@@ -11,20 +11,35 @@ class CFG(object):
         for prod in prods:
             self.prod[lhs].append(tuple(prod.split()))
 
+    # generates random function
     def gen_random(self, symbol):
-        sentence = ''
+        oppr = ['>', '<', '-', '+', '*']
+        var = ['x', 'y']
+        # for the number of functions
+        my_list = range(0, 10)
+        funcList = []
+        # randomly making functions with random return value and value of the expression
+        # chosen from the oppr and var above
+        for i in my_list:
+            funcString = """def func{0} ( {1}, {2}):
+                                strExpr = '{3} {4} {5}'
+                                expr = eval(strExpr)
+                                if expr == False:
+                                    return {6}
+                                elif expr == True:
+                                    return {7}
+                                else:
+                                    return {8}
 
-        # select one production of this symbol randomly
-        rand_prod = random.choice(self.prod[symbol])
+                            """.format(i, var[0], var[1], var[random.randint(0, 1)],
+                                       oppr[random.randint(0, 4)], var[random.randint(0, 1)], var[random.randint(0, 1)],
+                                       var[random.randint(0, 1)], var[random.randint(0, 1)])
+            funcList.append(funcString)  # first population of function
 
-        for sym in rand_prod:
-            # for non-terminals, recurse
-            if sym in self.prod:
-                sentence += self.gen_random(sym)
-            else:
-                sentence += sym + ' '
-
-        return sentence
+        # makes new random functions from the oppressions and the variables above
+        for i in my_list:
+            exec(funcList[i])
+        return funcList
 
     # function is a black box function, we want a function that matches pretty closely to this func
     def max(self, x, y):
@@ -69,13 +84,23 @@ class CFG(object):
         return sorted_d
 
     # finds the cost of each function with respect to the black box function
-    def cost(self, func):
+    def cost(self, func, population=[]):
         pair_list = range(0, 10)
+        func = []
         cost = 0
         for i in pair_list:
-            var1 = random.randint(-100, 100)  # gets random inputs for the two function
-            var2 = random.randint(-100, 100)
-            cost += (func(var1, var2) - max(var1, var2)) * (func(var1, var2) - max(var1, var2))
+            func[i] = exec("""func{}""".format(j))
+
+        while j < len(population):
+            for i in pair_list:
+                var1 = random.randint(-100, 100)  # gets random inputs for the two function
+                var2 = random.randint(-100, 100)
+                cost += (func(var1, var2) - max(var1, var2)) * (func(var1, var2) - max(var1, var2))
+
+        # gets the cost of each function and adds it to the list
+        cost_list = []
+        for i in my_list:
+            exec("""cost_list.insert({},cfg1.cost(func{}))""".format(i, i))
         return cost
 
     # prints the first four functions of the lowest cost and returns the array of thsi function
@@ -105,36 +130,40 @@ class CFG(object):
 
     # mutates two functions passed in the parameter
     def mutate_population(self, population=[]):
-        j = 0
-        breedPop = []
-        print(len(population))
+        j = 0  # the array index of the breed function
+        breedPop = []  # the array of the breed function that gets returned
+        # while all the functions in the parent function are breeded
         while j < len(population):
             strFunc1 = population[j]
             strFunc2 = population[j + 1]
-            i = 1
-            replaceWord = 'return'
+            i = 1  # to replace the world
+            replaceWord = 'return'  # word to be replaced
             wordLength = len(replaceWord)
-            variableLength = len(' x')
+            variableLength = len(' x')  # variable to be replaced
             replaceLen = wordLength + variableLength
             statement1 = self.findnth(strFunc1, replaceWord, 0)
             statement2 = self.findnth(strFunc2, replaceWord, 0)
 
             while strFunc1[statement1: statement1 + replaceLen] == strFunc2[statement2: statement2 + replaceLen]:
-                statement1 = self.findnth(strFunc1, replaceWord, i)
-                statement2 = self.findnth(strFunc2, replaceWord, i)
-                i += 1
+                statement1 = self.findnth(strFunc1, replaceWord,
+                                          i)  # the statement to be replaced from the first function
+                statement2 = self.findnth(strFunc2, replaceWord,
+                                          i)  # the statement to be replaced from the second function
+                i += 1  # check if the return statements are the same, then ignore and go to the next return statement
+                # 3 because there are just 3 return statements
                 if i > 3:
                     break
-
+            # when a return function is found which is different for both the function, replace it in the first function
             breedFunc1 = strFunc1.replace(strFunc1[statement1:(statement1 + wordLength + variableLength)],
                                           strFunc2[statement2:(statement2 + wordLength + variableLength)], 1)
 
-            j += 2
-            print(breedPop)
-            print(j)
-            breedPop.append(breedFunc1)
-            return breedPop
+            j += 2  # two functions from the population are taken at a time
+            breedPop.append(
+                breedFunc1)  # breed population is the second generation of the parent population passed in the function
 
+        return breedPop
+
+    def geneticAlgorithm(self):
 
 
 cfg1 = CFG()
@@ -201,3 +230,4 @@ first_population = cfg1.print_firstPop(funcList, indexArr)
 # returns a mutated breed of the first two functions in the first population
 breed1 = cfg1.mutate_population(first_population)
 
+# repeating the process
