@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0d6aec89-1496-4db3-a0fd-8cb531603836" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/maxFunc.py" beforeDir="false" afterPath="$PROJECT_DIR$/maxFunc.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -14,10 +15,11 @@
     <session id="980399034">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="1" />
+          <entry key="project.closed" value="2" />
+          <entry key="project.open.time.3" value="1" />
           <entry key="project.open.time.5" value="1" />
           <entry key="project.open.time.7" value="1" />
-          <entry key="project.opened" value="2" />
+          <entry key="project.opened" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -32,12 +34,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="13550" />
+          <entry key="py" value="13551" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="13550" />
+          <entry key="Python" value="13551" />
         </counts>
       </usages-collector>
     </session>
@@ -47,8 +49,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/randomGrammar.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-109">
-              <caret line="72" lean-forward="true" selection-start-line="72" selection-end-line="72" />
+            <state relative-caret-position="1020">
+              <caret line="72" selection-start-line="72" selection-end-line="72" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
                 <marker date="1535480464962" expanded="true" signature="477:692" ph="..." />
@@ -74,14 +76,14 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/maxFunc.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="944">
-              <caret line="92" column="12" selection-start-line="92" selection-start-column="12" selection-end-line="92" selection-end-column="12" />
+            <state relative-caret-position="2565">
+              <caret line="171" selection-start-line="171" selection-end-line="171" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
-                <marker date="1536700896729" expanded="true" signature="347:1647" ph="..." />
-                <marker date="1536700896729" expanded="true" signature="1767:1935" ph="..." />
-                <marker date="1536700896729" expanded="true" signature="2888:2952" ph="..." />
-                <marker date="1536700896729" expanded="true" signature="2984:3154" ph="..." />
+                <marker date="1536774930589" expanded="true" signature="347:1647" ph="..." />
+                <marker date="1536774930589" expanded="true" signature="1767:1935" ph="..." />
+                <marker date="1536774930589" expanded="true" signature="2888:2952" ph="..." />
+                <marker date="1536774930589" expanded="true" signature="2984:3154" ph="..." />
               </folding>
             </state>
           </provider>
@@ -120,7 +122,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -136,6 +137,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -261,7 +263,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.16942675" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.0" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.5656051" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -327,6 +329,19 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/randomGrammar.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1020">
+          <caret line="72" selection-start-line="72" selection-end-line="72" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+            <marker date="1535480464962" expanded="true" signature="477:692" ph="..." />
+            <marker date="1535480464962" expanded="true" signature="899:1299" ph="..." />
+            <marker date="1535480464962" expanded="true" signature="1894:2314" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/maxAlgorithm.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -337,29 +352,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/randomGrammar.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-109">
-          <caret line="72" lean-forward="true" selection-start-line="72" selection-end-line="72" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-            <marker date="1535480464962" expanded="true" signature="477:692" ph="..." />
-            <marker date="1535480464962" expanded="true" signature="899:1299" ph="..." />
-            <marker date="1535480464962" expanded="true" signature="1894:2314" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/maxFunc.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="944">
-          <caret line="92" column="12" selection-start-line="92" selection-start-column="12" selection-end-line="92" selection-end-column="12" />
+        <state relative-caret-position="2565">
+          <caret line="171" selection-start-line="171" selection-end-line="171" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
-            <marker date="1536700896729" expanded="true" signature="347:1647" ph="..." />
-            <marker date="1536700896729" expanded="true" signature="1767:1935" ph="..." />
-            <marker date="1536700896729" expanded="true" signature="2888:2952" ph="..." />
-            <marker date="1536700896729" expanded="true" signature="2984:3154" ph="..." />
+            <marker date="1536774930589" expanded="true" signature="347:1647" ph="..." />
+            <marker date="1536774930589" expanded="true" signature="1767:1935" ph="..." />
+            <marker date="1536774930589" expanded="true" signature="2888:2952" ph="..." />
+            <marker date="1536774930589" expanded="true" signature="2984:3154" ph="..." />
           </folding>
         </state>
       </provider>

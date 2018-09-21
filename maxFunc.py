@@ -163,7 +163,7 @@ class CFG(object):
 
         return breedPop
 
-    def geneticAlgorithm(self):
+    #def geneticAlgorithm(self):
 
 
 cfg1 = CFG()
